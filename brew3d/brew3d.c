@@ -8,11 +8,13 @@
 // hand-written enum, guessed from trial and error
 enum
 {
-    BREW3D_MESH_LIQUID,
+    DUMMY_MESH_DUMMY
+    /*
     BREW3D_MESH_CUPBODY,
     BREW3D_MESH_HEAD,
     BREW3D_MESH_HANDLE,
     BREW3D_MESH_NLOGO
+    */
 };
 
 int main()
@@ -28,7 +30,7 @@ int main()
 
     surface_t zbuffer = surface_alloc(FMT_RGBA16, display_get_width(), display_get_height());
 
-    model64_t *model = model64_load("rom:/brewmodel.model64");
+    model64_t *model = model64_load("rom:/dummy.model64");
 
     debugf("model64_get_mesh_count(model) = %ld\n", model64_get_mesh_count(model));
 
@@ -66,16 +68,28 @@ int main()
         glLoadIdentity();
         gluPerspective(80.0f, 4.0f / 3.0f, 1.0f, 10.0f);
 
+        float aspect_ratio = (float)display_get_width() / (float)display_get_height();
+        float near_plane = 1.0f;
+        float far_plane = 2000.0f;
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glFrustum(-near_plane*aspect_ratio, near_plane*aspect_ratio, -near_plane, near_plane, near_plane, far_plane);
+
+
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+        
         gluLookAt(
-            -5, 3, 1,
+            -335, 333, 331,
             0, 2, 0,
             0, 1, 0);
+
 
         // make the light turn around the object
         glPushMatrix();
         glRotatef(-angle * 3, 0, 1, 0);
+
         glLightfv(GL_LIGHT0, GL_POSITION, (GLfloat[4]){3, 3, 0, 1});
         glPopMatrix();
 
@@ -104,21 +118,26 @@ int main()
 
             // glMaterialf(GL_FRONT_AND_BACK, GL_LINEAR_ATTENUATION, 1)
 
-            assert(model64_get_mesh_count(model) == 5);
+            assert(model64_get_mesh_count(model) == 1);
 
-            glColor3f(0.982, 0.429, 0.033);
-            model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_LIQUID));
+            glColor3f(1.0f, 1.0f, 1.0f);
 
+            model64_draw_mesh(model64_get_mesh(model, DUMMY_MESH_DUMMY));
+
+            //model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_LIQUID));
+
+            /*
             glColor4f(1, 1, 1, 0.196);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_CUPBODY));
-            model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_HANDLE));
+            //model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_CUPBODY));
+            //model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_HANDLE));
             glDisable(GL_BLEND);
 
             glColor3f(1, 1, 1);
-            model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_HEAD));
-            model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_NLOGO));
+            //model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_HEAD));
+            //model64_draw_mesh(model64_get_mesh(model, BREW3D_MESH_NLOGO));
+            */
 
             if (use_the_dlist)
             {

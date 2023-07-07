@@ -13,7 +13,7 @@ OBJS = $(addprefix $(BUILD_DIR)/,$(C_FILES:.c=.o))
 
 # assets
 FILESYSTEM_DIR = $(BUILD_DIR)/filesystem
-ASSETS_MODEL64 = brewmodel.model64
+ASSETS_MODEL64 = brewmodel.model64 dummy.model64
 FILESYSTEM_FILES = $(addprefix $(FILESYSTEM_DIR)/,$(ASSETS_MODEL64))
 
 %.model64: %.glb
